@@ -1,3 +1,3 @@
 # Ikonpass-reservation-maker
-Automatic Ikonpass ski resort reservation maker
-Work in progress
+Automatic Ikonpass ski resort reservation maker.
+Still a work in progress
