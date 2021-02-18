@@ -4,7 +4,7 @@ import time
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from datetime import date
-driver = webdriver.Chrome('/Users/michellebodart/Documents/chromedriver')
+driver = webdriver.Chrome('./chromedriver')
 driver.implicitly_wait(4)
 
 email = input("Email: ")
@@ -48,10 +48,10 @@ while need_reservation:
     search_bar = driver.find_element_by_css_selector('input[placeholder="Search"]')
     search_bar.send_keys(resort)
 
-    crystal_mountain = driver.find_element_by_id("react-autowhatever-resort-picker-section-1-item-0")
+    crystal_mountain = driver.find_element_by_id("react-autowhatever-resort-picker-section-0-item-0")
     crystal_mountain.click()
 
-    time.sleep(3)
+    time.sleep(5)
     
     continue_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/main/section[2]/div/div[2]/div[2]/div[2]/button')
     continue_button.click()
@@ -64,12 +64,21 @@ while need_reservation:
     day.click()
 
     try:
-        save_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/main/section[2]/div/div[2]/div[3]/div[1]/div[2]/div/div[4]/button[1]')
+        # Look for all checkboxes on the screen
+        checkboxes = driver.find_elements_by_css_selector("input[type='checkbox']")
+        for checkbox in checkboxes:
+            # The account that is signed in has checkbox already default checked
+            if not checkbox.is_selected():
+                # Click checkboxes for all other linked family accounts
+                checkbox.click()
+        save_button = driver.find_element_by_xpath('//*[@id="root"]/div/div/main/section[2]/div/div[2]/div[3]/div[1]/div[2]/div/div[3]/button[1]')
         need_reservation = False
         
     except NoSuchElementException:
         driver.refresh()
         tries += 1
+        print(tries)
+        time.sleep(10)
 
 if friends_and_fam:
     time.sleep(5)
